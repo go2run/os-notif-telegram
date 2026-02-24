@@ -11,7 +11,21 @@ Currently supports: **Windows 10 / 11**
 ## Installation
 
 ```bash
-pip install os-notif-telegram
+pipx install os-notif-telegram
+```
+
+`pipx` automatically adds the command to your PATH so it works from any terminal.
+If you don't have `pipx` yet:
+
+```bash
+pip install pipx
+pipx ensurepath
+```
+
+Then open a new terminal and install:
+
+```bash
+pipx install os-notif-telegram
 ```
 
 ## Quick Start

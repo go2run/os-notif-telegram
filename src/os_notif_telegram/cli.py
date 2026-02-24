@@ -99,12 +99,21 @@ def start(no_tray):
         except KeyboardInterrupt:
             click.echo("\nStopped.")
     else:
-        from .tray import run_with_tray
+        # 產生一個分離的背景子程序來跑 tray，讓終端機立刻返回
+        import subprocess
 
-        try:
-            run_with_tray(cfg)
-        except KeyboardInterrupt:
-            click.echo("\nStopped.")
+        _DETACHED_PROCESS = 0x00000008
+        _CREATE_NO_WINDOW = 0x08000000
+
+        proc = subprocess.Popen(
+            [sys.executable, "-m", "os_notif_telegram", "_worker"],
+            creationflags=_DETACHED_PROCESS | _CREATE_NO_WINDOW,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            close_fds=True,
+        )
+        click.echo(f"Started in background (PID {proc.pid}). Check the system tray.")
 
 
 @main.command()
@@ -131,6 +140,17 @@ def status():
         click.echo(f"Running (PID {pid})")
     else:
         click.echo("Not running")
+
+
+@main.command("_worker", hidden=True)
+def worker():
+    """Internal: runs the tray icon in the detached background process."""
+    cfg = load_config()
+    if not is_configured(cfg):
+        sys.exit(1)
+    from .tray import run_with_tray
+
+    run_with_tray(cfg)
 
 
 @main.command()
