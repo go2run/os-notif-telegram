@@ -3,6 +3,7 @@ name: Publish to PyPI
 on:
   release:
     types: [published]  # 在 GitHub 建立 Release 時自動觸發
+  workflow_dispatch:    # 允許在 Actions 頁面手動點按鈕觸發（測試用）
 
 jobs:
   build:
