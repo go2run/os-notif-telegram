@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "os-notif-telegram"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Forward OS notifications to Telegram"
 readme = "README.md"
 license = { text = "MIT" }
@@ -36,11 +36,14 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-username/os-notif-telegram"
-Issues = "https://github.com/your-username/os-notif-telegram/issues"
+Homepage = "https://github.com/go2run/os-notif-telegram"
+Issues = "https://github.com/go2run/os-notif-telegram/issues"
 
 [project.scripts]
 os-notif-telegram = "os_notif_telegram.cli:main"
+
+[tool.hatch.version]
+path = "src/os_notif_telegram/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/os_notif_telegram"]
